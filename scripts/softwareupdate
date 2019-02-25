@@ -1,0 +1,287 @@
+#! /usr/bin/python
+
+import subprocess
+import os
+import sys
+import platform
+import time
+sys.path.insert(0, '/usr/local/munki')
+
+from munkilib import FoundationPlist
+from Foundation import CFPreferencesCopyAppValue
+#from PyObjCTools import Conversion
+
+def get_software_update():
+    
+    # Read in com.apple.SoftwareUpdate and com.apple.commerce domains for processing 
+
+    softwareupdate = {}  
+    softwareupdate['skip_download_lack_space'] = to_bool(get_pref_value('DidSkipBackgroundDownloadLackingDiskSpace', 'com.apple.SoftwareUpdate'))
+    softwareupdate['eval_critical_if_unchanged'] = to_bool(get_pref_value('EvaluateCriticalEvenIfUnchanged', 'com.apple.SoftwareUpdate'))
+    softwareupdate['lastattemptsystemversion'] = get_pref_value('LastAttemptSystemVersion', 'com.apple.SoftwareUpdate')
+    softwareupdate['lastbackgroundsuccessfuldate'] = string_to_time(get_pref_value('LastBackgroundSuccessfulDate', 'com.apple.SoftwareUpdate')) 
+    softwareupdate['lastfullsuccessfuldate'] = string_to_time(get_pref_value('LastFullSuccessfulDate', 'com.apple.SoftwareUpdate'))
+    softwareupdate['lastrecommendedupdatesavailable'] = get_pref_value('LastRecommendedUpdatesAvailable', 'com.apple.SoftwareUpdate') 
+    softwareupdate['lastresultcode'] = get_pref_value('LastResultCode', 'com.apple.SoftwareUpdate')
+    softwareupdate['lastsessionsuccessful'] = to_bool(get_pref_value('LastSessionSuccessful', 'com.apple.SoftwareUpdate'))
+    softwareupdate['lastsuccessfuldate'] = string_to_time(get_pref_value('LastSuccessfulDate', 'com.apple.SoftwareUpdate'))
+    softwareupdate['lastupdatesavailable'] = get_pref_value('LastUpdatesAvailable', 'com.apple.SoftwareUpdate')
+    softwareupdate['one_time_force_scan_enabled'] = to_bool(get_pref_value('OneTimeForceScanEnabled', 'com.apple.SoftwareUpdate'))
+    softwareupdate['skiplocalcdn'] = to_bool(get_pref_value('SkipLocalCDN', 'com.apple.SoftwareUpdate'))
+    softwareupdate['recommendedupdates'] = get_pref_value('RecommendedUpdates', 'com.apple.SoftwareUpdate')
+    
+    
+#    print(type(softwareupdate['recommendedupdates']))
+    
+#    new_a = Conversion.pythonCollectionFromPropertyList(softwareupdate['recommendedupdates'])
+#    type(new_a)
+#    print(new_a)
+    
+    softwareupdate['configdatainstall'] = to_bool(get_pref_value('ConfigDataInstall', 'com.apple.SoftwareUpdate'))
+    softwareupdate['criticalupdateinstall'] = to_bool(get_pref_value('CriticalUpdateInstall', 'com.apple.SoftwareUpdate'))
+    softwareupdate['automaticdownload'] = to_bool(get_pref_value('AutomaticDownload', 'com.apple.SoftwareUpdate'))
+    softwareupdate['inactiveupdates'] = get_pref_value('InactiveUpdates', 'com.apple.SoftwareUpdate')
+    softwareupdate['catalogurl'] = get_pref_value('CatalogURL', 'com.apple.SoftwareUpdate')
+    softwareupdate['auto_update'] = to_bool(get_pref_value('AutoUpdate', 'com.apple.commerce'))
+    softwareupdate['auto_update_restart_required'] = to_bool(get_pref_value('AutoUpdateRestartRequired', 'com.apple.commerce'))
+            
+    return softwareupdate
+
+def get_softwareupdate_history():
+    try:
+        out = FoundationPlist.readPlist('/Library/Receipts/InstallHistory.plist')
+    except Exception:
+        return []
+#        pass
+
+    history = []
+
+    for entry in out:
+        if entry['processName'] == "softwareupdated" or entry['processName'] == "Software Update":
+            history_entry = {}
+            for item in entry:    
+                if item == 'contentType':
+                    history_entry['content_type'] = entry[item]
+                elif item == 'date':
+                    history_entry['date'] = string_to_time(entry[item])
+                elif item == 'displayName':
+                    history_entry['display_name'] = entry[item]
+                elif item == 'displayVersion':
+                    history_entry['display_version'] = entry[item]
+                elif item == 'packageIdentifiers':
+                    history_entry['package_identifiers'] = entry[item]
+            history.append(dict(history_entry))
+        else:
+            pass
+        
+    return {"softwareupdate_history":history}
+            
+def get_xprotect():
+    # If less than 10.10, collect from legacy XProtect location
+    if getOsVersion() < 6:
+        return {}
+    elif getOsVersion() < 10:
+        xprotect_plist = '/System/Library/CoreServices/CoreTypes.bundle/Contents/Resources/XProtect.meta.plist'
+    else:
+        xprotect_plist = '/System/Library/CoreServices/XProtect.bundle/Contents/Resources/XProtect.meta.plist'
+    
+    try:
+        out = FoundationPlist.readPlist(xprotect_plist)
+    except Exception:
+        return {}
+    
+    xprotect = {}
+    
+    for item in out:
+        if item == 'Version':
+            xprotect['xprotect_version'] = str(out[item])
+
+    stat = os.stat(xprotect_plist)
+    xprotect['mrxprotect'] = str(int(stat.st_mtime))
+        
+    return xprotect
+        
+def get_gatekeeper():          
+    # If less than 10.8, don't collect Gatekeeper data
+    if getOsVersion() < 8:
+        return {}
+    else:
+        gatekeeper_plist = '/private/var/db/gkopaque.bundle/Contents/Info.plist'
+    
+    try:
+        out = FoundationPlist.readPlist(gatekeeper_plist)
+    except Exception:
+        return {}
+    
+    gatekeeper = {}
+    
+    for item in out:
+        if item == 'CFBundleShortVersionString':
+            gatekeeper['gatekeeper_version'] = str(out[item])
+        
+    stat = os.stat(gatekeeper_plist)
+    gatekeeper['gatekeeper_last_modified'] = str(int(stat.st_mtime))
+    
+    return gatekeeper
+
+def get_gatekeeper_disk():          
+    # If less than 10.8, don't collect Gatekeeper data
+    if getOsVersion() < 8:
+        return {}
+    else:
+        gatekeeper_plist = '/private/var/db/gke.bundle/Contents/Info.plist'
+    
+    try:
+        out = FoundationPlist.readPlist(gatekeeper_plist)
+    except Exception:
+        return {}
+    
+    gatekeeper = {}
+    
+    for item in out:
+        if item == 'CFBundleShortVersionString':
+            gatekeeper['gatekeeper_disk_version'] = str(out[item])
+        
+    stat = os.stat(gatekeeper_plist)
+    gatekeeper['gatekeeper_disk_last_modified'] = str(int(stat.st_mtime))
+    
+    return gatekeeper
+
+def get_kext_exclude():    
+    try:
+        out = FoundationPlist.readPlist('/System/Library/Extensions/AppleKextExcludeList.kext/Contents/Info.plist')
+    except Exception:
+        return {}
+    
+    kextexclude = {}
+    
+    for item in out:
+        if item == 'CFBundleShortVersionString':
+            kextexclude['kext_exclude_version'] = str(out[item])   
+        
+    stat = os.stat('/System/Library/Extensions/AppleKextExcludeList.kext/Contents/Info.plist')
+    kextexclude['kext_exclude_last_modified'] = str(int(stat.st_mtime))
+    
+    return kextexclude
+
+def get_mrt():    
+    try:
+        out = FoundationPlist.readPlist('/System/Library/CoreServices/MRT.app/Contents/Info.plist')
+    except Exception:
+        return {}
+    
+    mrt = {}
+    
+    for item in out:
+        if item == 'CFBundleShortVersionString':
+            mrt['mrt_version'] = str(out[item])   
+        
+    stat = os.stat('/System/Library/CoreServices/MRT.app/Contents/Info.plist')
+    mrt['mrt_last_modified'] = str(int(stat.st_mtime))
+    
+    return mrt
+        
+        
+def get_seedutil():       
+    # Get info about Apple Seed program if OS supports it
+    if os.path.isfile('/System/Library/PrivateFrameworks/Seeding.framework/Resources/seedutil'):
+        cmd = ['/System/Library/PrivateFrameworks/Seeding.framework/Resources/seedutil','current']
+        proc = subprocess.Popen(cmd, shell=False, bufsize=-1,
+                                stdin=subprocess.PIPE,
+                                stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        (output, unused_error) = proc.communicate()
+        
+        seedutil = {}
+                      
+        for item in output.split('\n'):
+            if 'Currently enrolled in: ' in item and '(null)' not in item:
+                seedutil["enrolled_seed"] = item.replace("Currently enrolled in: ", "").strip()
+            elif 'Program: ' in item:
+                seedutil["program_seed"] = item.replace("Program: ", "").strip()
+            elif 'Build is seed: ' in item:
+                seedutil["build_is_seed"] = to_bool(item.replace("Build is seed: ", "").strip())
+            elif 'NSShowFeedbackMenu: ' in item:
+                seedutil["show_feedback_menu"] = to_bool(item.replace("NSShowFeedbackMenu: ", "").strip())
+            elif 'DisableSeedOptOut: ' in item:
+                seedutil["disable_seed_opt_out"] = to_bool(item.replace("DisableSeedOptOut: ", "").strip())
+            elif 'CatalogURL: ' in item and '(null)' not in item:
+                seedutil["catalog_url_seed"] = item.replace("CatalogURL: ", "").strip()        
+        
+    else:
+        seedutil = {}
+    
+    return seedutil
+
+    
+def getOsVersion():
+    """Returns the minor OS version."""
+    os_version_tuple = platform.mac_ver()[0].split('.')
+    return int(os_version_tuple[1])
+                      
+def to_bool(s):
+    if s == "":
+        return ""
+    elif s == True:
+        return 1
+    else:
+        return 0
+    
+def string_to_time(date_time):
+    
+    if (date_time == "0" or date_time == 0):
+        return ""
+    else:
+        return str(int(time.mktime(time.strptime(str(date_time).replace(" +0000", ""), '%Y-%m-%d %H:%M:%S'))))
+
+def get_pref_value(key, domain):
+    
+    value = CFPreferencesCopyAppValue(key, domain)
+    
+    if(value is not None):
+        return value
+    elif(value is not None and len(value) == 0 ):
+        return ""
+    else:
+        return ""
+    
+def merge_two_dicts(x, y):
+    z = x.copy()
+    z.update(y)
+    return z
+
+def main():
+    
+    # Remove old softwareupdate.sh script, if it exists
+    if os.path.isfile(os.path.dirname(os.path.realpath(__file__))+'/softwareupdate.sh'):
+        os.remove(os.path.dirname(os.path.realpath(__file__))+'/softwareupdate.sh')
+    
+    """Main"""
+    # Create cache dir if it does not exist
+    cachedir = '%s/cache' % os.path.dirname(os.path.realpath(__file__))
+    if not os.path.exists(cachedir):
+        os.makedirs(cachedir)
+
+    # Skip manual check
+    if len(sys.argv) > 1:
+        if sys.argv[1] == 'manualcheck':
+            print 'Manual check: skipping'
+            exit(0)
+
+    # Get results
+    result = dict()
+
+    result = merge_two_dicts(get_software_update(), get_xprotect())
+    result = merge_two_dicts(result, get_softwareupdate_history())
+    result = merge_two_dicts(result, get_gatekeeper())
+    result = merge_two_dicts(result, get_gatekeeper_disk())
+    result = merge_two_dicts(result, get_kext_exclude())
+    result = merge_two_dicts(result, get_mrt())
+    result = merge_two_dicts(result, get_seedutil())
+    
+    # Write softwareupdate results to cache file
+    output_plist = os.path.join(cachedir, 'softwareupdate.plist')
+    FoundationPlist.writePlist(result, output_plist)
+#    print FoundationPlist.writePlistToString(result)
+
+if __name__ == "__main__":
+    main()
