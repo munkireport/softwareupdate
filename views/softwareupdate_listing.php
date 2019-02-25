@@ -19,7 +19,6 @@ new Softwareupdate_model;
 			<th data-i18n="listing.computername" data-colname='machine.computer_name'></th>
 			<th data-i18n="serial" data-colname='reportdata.serial_number'></th>
 			<th data-i18n="softwareupdate.recommendedupdates" data-colname='softwareupdate.recommendedupdates'></th>
-			<th data-i18n="softwareupdate.mrxprotect" data-colname='softwareupdate.mrxprotect'></th>
 			<th data-i18n="softwareupdate.lastsuccessfuldate" data-colname='softwareupdate.lastsuccessfuldate'></th>
 			<th data-i18n="softwareupdate.lastbackgroundsuccessfuldate" data-colname='softwareupdate.lastbackgroundsuccessfuldate'></th>
 			<th data-i18n="softwareupdate.inactiveupdates" data-colname='softwareupdate.inactiveupdates'></th>
@@ -29,16 +28,17 @@ new Softwareupdate_model;
 			<th data-i18n="softwareupdate.automaticdownload" data-colname='softwareupdate.automaticdownload'></th>
 			<th data-i18n="softwareupdate.configdatainstall" data-colname='softwareupdate.configdatainstall'></th>
 			<th data-i18n="softwareupdate.criticalupdateinstall" data-colname='softwareupdate.criticalupdateinstall'></th>
-			<th data-i18n="softwareupdate.lastresultcode" data-colname='softwareupdate.lastresultcode'></th>
-			<th data-i18n="softwareupdate.lastsessionsuccessful" data-colname='softwareupdate.lastsessionsuccessful'></th>
-			<th data-i18n="softwareupdate.skiplocalcdn" data-colname='softwareupdate.skiplocalcdn'></th>
-			<th data-i18n="softwareupdate.lastattemptsystemversion" data-colname='softwareupdate.lastattemptsystemversion'></th>
+			<th data-i18n="softwareupdate.xprotect_version" data-colname='softwareupdate.xprotect_version'></th>
+			<th data-i18n="softwareupdate.gatekeeper_version" data-colname='softwareupdate.gatekeeper_version'></th>
+			<th data-i18n="softwareupdate.kext_exclude_version" data-colname='softwareupdate.kext_exclude_version'></th>
+			<th data-i18n="softwareupdate.mrt_version" data-colname='softwareupdate.mrt_version'></th>
+			<th data-i18n="softwareupdate.program_seed" data-colname='softwareupdate.program_seed'></th>
 		  </tr>
 		</thead>
 
 		<tbody>
 		  <tr>
-			<td data-i18n="listing.loading" colspan="16" class="dataTables_empty"></td>
+			<td data-i18n="listing.loading" colspan="17" class="dataTables_empty"></td>
 		  </tr>
 		</tbody>
 
@@ -86,7 +86,7 @@ new Softwareupdate_model;
                 url: appUrl + '/datatables/data',
                 type: "POST",
                 data: function(d){
-                     d.mrColNotEmpty = "mrxprotect";
+                     d.mrColNotEmpty = "lastsuccessfuldate";
                     
                     // Check for column in search
                     if(d.search.value){
@@ -95,7 +95,6 @@ new Softwareupdate_model;
                                 d.columns[index].search.value = '> 0';
                             }
                         });
-
                     }
 
                     if(d.search.value.match(/^\d+\.\d+(\.(\d+)?)?$/)){
@@ -116,59 +115,55 @@ new Softwareupdate_model;
 	        	var link = mr.getClientDetailLink(name, sn, '#tab_softwareupdate-tab');
 	        	$('td:eq(0)', nRow).html(link);
                 
-	        	// Format XProtect Install timestamp
-	        	var checkin = $('td:eq(3)', nRow).html();
-	        	if(checkin !== "" ){
-                    $('td:eq(3)', nRow).html('<span title="' + checkin + '">' + moment(checkin).fromNow()+'</span>');
-	        	}
-                
 	        	// Format Successful Date timestamp
-	        	var checkin = $('td:eq(4)', nRow).html();
-	        	if(checkin !== "" ){
-                    $('td:eq(4)', nRow).html('<span title="' + checkin + '">' + moment(checkin).fromNow()+'</span>');
-	        	}
+	        	var checkin = $('td:eq(3)', nRow).html();
+	        	if(checkin !== "" && checkin.indexOf('-') === -1){
+                    var date = new Date(checkin * 1000);
+                    $('td:eq(3)', nRow).html('<span title="'+moment(date).format('llll')+'">'+moment(date).fromNow()+'</span>');
+	        	} else if (checkin !== ""){
+                    $('td:eq(3)', nRow).html('<span title="' + checkin + '">' + moment(checkin).fromNow()+'</span>');   
+                }
                 
 	        	// Format Background Successful Date timestamp
-	        	var checkin = $('td:eq(5)', nRow).html();
-	        	if(checkin !== "" ){
-                    $('td:eq(5)', nRow).html('<span title="' + checkin + '">' + moment(checkin).fromNow()+'</span>');
-	        	}
-                
+	        	var checkin = $('td:eq(4)', nRow).html();
+	        	if(checkin !== "" && checkin.indexOf('-') === -1){
+                    var date = new Date(checkin * 1000);
+                    $('td:eq(4)', nRow).html('<span title="'+moment(date).format('llll')+'">'+moment(date).fromNow()+'</span>');
+	        	} else if (checkin !== ""){
+                    $('td:eq(4)', nRow).html('<span title="' + checkin + '">' + moment(checkin).fromNow()+'</span>');   
+                }
+
 	        	// automaticcheckenabled
-	        	var automaticcheckenabled=$('td:eq(9)', nRow).html();
+	        	var automaticcheckenabled=$('td:eq(8)', nRow).html();
 	        	automaticcheckenabled = automaticcheckenabled == '1' ? i18n.t('yes') :
 	        	(automaticcheckenabled === '0' ? i18n.t('no') : '')
-	        	$('td:eq(9)', nRow).html(automaticcheckenabled)
+	        	$('td:eq(8)', nRow).html(automaticcheckenabled)
                 
 	        	// automaticdownload
-	        	var automaticdownload=$('td:eq(10)', nRow).html();
+	        	var automaticdownload=$('td:eq(9)', nRow).html();
 	        	automaticdownload = automaticdownload == '1' ? i18n.t('yes') :
 	        	(automaticdownload === '0' ? i18n.t('no') : '')
-	        	$('td:eq(10)', nRow).html(automaticdownload)
+	        	$('td:eq(9)', nRow).html(automaticdownload)
                 
 	        	// configdatainstall
-	        	var configdatainstall=$('td:eq(11)', nRow).html();
+	        	var configdatainstall=$('td:eq(10)', nRow).html();
 	        	configdatainstall = configdatainstall == '1' ? i18n.t('yes') :
 	        	(configdatainstall === '0' ? i18n.t('no') : '')
-	        	$('td:eq(11)', nRow).html(configdatainstall)
+	        	$('td:eq(10)', nRow).html(configdatainstall)
                 
 	        	// criticalupdateinstall
-	        	var criticalupdateinstall=$('td:eq(12)', nRow).html();
+	        	var criticalupdateinstall=$('td:eq(11)', nRow).html();
 	        	criticalupdateinstall = criticalupdateinstall == '1' ? i18n.t('yes') :
 	        	(criticalupdateinstall === '0' ? i18n.t('no') : '')
-	        	$('td:eq(12)', nRow).html(criticalupdateinstall)
+	        	$('td:eq(11)', nRow).html(criticalupdateinstall)
                 
-	        	// lastsessionsuccessful
-	        	var lastsessionsuccessful=$('td:eq(14)', nRow).html();
-	        	lastsessionsuccessful = lastsessionsuccessful == '1' ? i18n.t('yes') :
-	        	(lastsessionsuccessful === '0' ? i18n.t('no') : '')
-	        	$('td:eq(14)', nRow).html(lastsessionsuccessful)
-                
-	        	// skiplocalcdn
-	        	var skiplocalcdn=$('td:eq(15)', nRow).html();
-	        	skiplocalcdn = skiplocalcdn == '1' ? i18n.t('yes') :
-	        	(skiplocalcdn === '0' ? i18n.t('no') : '')
-	        	$('td:eq(15)', nRow).html(skiplocalcdn)
+	        	// seed
+	        	var colvar=$('td:eq(16)', nRow).html();
+	        	colvar = colvar == '3' ? '<span class="label label-warning">'+i18n.t('softwareupdate.publicseed')+'</span>' :
+	        	colvar = colvar == '2' ? '<span class="label label-danger">'+i18n.t('softwareupdate.developerseed')+'</span>' :
+	        	colvar = colvar == '1' ? '<span class="label label-warning">'+i18n.t('softwareupdate.customerseed')+'</span>' :
+	        	(colvar === '0' ? '<span class="label label-success">'+i18n.t('softwareupdate.unenrolled')+'</span>' : colvar)
+	        	$('td:eq(16)', nRow).html(colvar)
 		    }
 	    });
 
