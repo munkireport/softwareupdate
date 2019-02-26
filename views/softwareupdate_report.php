@@ -27,7 +27,7 @@
   <div class="row">
       <?php $widget->view($this, 'softwareupdate_mrt_version'); ?>
       <?php $widget->view($this, 'softwareupdate_xprotect_version'); ?>
-    <?php $widget->view($this, 'softwareupdate_seed'); ?>
+      <?php $widget->view($this, 'softwareupdate_seed'); ?>
   </div> <!-- /row -->
 
     
