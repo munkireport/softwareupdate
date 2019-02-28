@@ -29,14 +29,6 @@ def get_software_update():
     softwareupdate['one_time_force_scan_enabled'] = to_bool(get_pref_value('OneTimeForceScanEnabled', 'com.apple.SoftwareUpdate'))
     softwareupdate['skiplocalcdn'] = to_bool(get_pref_value('SkipLocalCDN', 'com.apple.SoftwareUpdate'))
     softwareupdate['recommendedupdates'] = get_pref_value('RecommendedUpdates', 'com.apple.SoftwareUpdate')
-    
-    
-#    print(type(softwareupdate['recommendedupdates']))
-    
-#    new_a = Conversion.pythonCollectionFromPropertyList(softwareupdate['recommendedupdates'])
-#    type(new_a)
-#    print(new_a)
-    
     softwareupdate['configdatainstall'] = to_bool(get_pref_value('ConfigDataInstall', 'com.apple.SoftwareUpdate'))
     softwareupdate['criticalupdateinstall'] = to_bool(get_pref_value('CriticalUpdateInstall', 'com.apple.SoftwareUpdate'))
     softwareupdate['automaticdownload'] = to_bool(get_pref_value('AutomaticDownload', 'com.apple.SoftwareUpdate'))
@@ -231,8 +223,14 @@ def string_to_time(date_time):
     if (date_time == "0" or date_time == 0):
         return ""
     else:
-        return str(int(time.mktime(time.strptime(str(date_time).replace(" +0000", ""), '%Y-%m-%d %H:%M:%S'))))
-
+        try:
+            return str(int(time.mktime(time.strptime(str(date_time).replace(" +0000", ""), '%Y-%m-%d %H:%M:%S'))))
+        except Exception:
+            try:
+                return str(int(time.mktime(time.strptime(str(date_time).replace(" +0000", ""), '%Y-%m-%dT%H:%M:%SZ'))))
+            except Exception:
+                return date_time
+            
 def get_pref_value(key, domain):
     
     value = CFPreferencesCopyAppValue(key, domain)
