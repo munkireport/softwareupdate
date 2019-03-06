@@ -88,7 +88,6 @@ class Softwareupdate_model extends \Model
 
             // Else if recommendedupdates, process for viewing
             } else if (array_key_exists($item, $plist) && $item == 'recommendedupdates' && $plist[$item] != 0) {
-                print_r("here");
                 $recommendedupdateslist = array_column($plist["recommendedupdates"], 'Display Name');                  
                 sort($recommendedupdateslist);
                 $recommendedupdateslistproper = implode(", ",$recommendedupdateslist);
