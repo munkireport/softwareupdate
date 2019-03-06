@@ -258,6 +258,10 @@ def main():
     cachedir = '%s/cache' % os.path.dirname(os.path.realpath(__file__))
     if not os.path.exists(cachedir):
         os.makedirs(cachedir)
+        
+    # Set the encoding
+    reload(sys)  
+    sys.setdefaultencoding('utf8')
 
     # Skip manual check
     if len(sys.argv) > 1:
