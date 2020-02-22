@@ -90,11 +90,6 @@
                             }
                         });
                     }
-
-                    if(d.search.value.match(/^\d+\.\d+(\.(\d+)?)?$/)){
-                        var search = d.search.value.split('.').map(function(x){return ('0'+x).slice(-2)}).join('');
-                        d.search.value = search;
-                    }                    
                 }
             },
             dom: mr.dt.buttonDom,
