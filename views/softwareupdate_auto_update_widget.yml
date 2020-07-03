@@ -1,0 +1,13 @@
+type: button
+widget_id: su_auto_update-widget
+api_url: /module/softwareupdate/get_binary_widget/auto_update
+i18n_title: softwareupdate.auto_update_widget
+icon: fa-cubes
+listing_link: /show/listing/softwareupdate/softwareupdate
+buttons:
+  - label: no
+    i18n_label: no
+    class: btn-danger 
+  - label: yes
+    i18n_label: yes
+    class: btn-success

@@ -1,0 +1,64 @@
+i18n_title: softwareupdate.reporttitle
+not_null_column: lastsuccessfuldate
+js_link: module/softwareupdate/js/softwareupdate
+table:
+    -
+        column: machine.computer_name
+        i18n_header: listing.computername
+        formatter: clientDetail
+        tab_link: softwareupdate-tab
+    -
+        column: reportdata.serial_number
+        i18n_header: serial
+    -
+        column: softwareupdate.recommendedupdates
+        i18n_header: softwareupdate.recommendedupdates
+    -
+        column: softwareupdate.lastsuccessfuldate
+        i18n_header: softwareupdate.lastsuccessfuldate
+        formatter: timestampToMoment
+    -
+        column: softwareupdate.lastbackgroundsuccessfuldate
+        i18n_header: softwareupdate.lastbackgroundsuccessfuldate
+        formatter: timestampToMoment
+    -
+        column: softwareupdate.inactiveupdates
+        i18n_header: softwareupdate.inactiveupdates
+    -
+        column: softwareupdate.catalogurl
+        i18n_header: softwareupdate.catalogurl
+    -
+        column: softwareupdate.lastupdatesavailable
+        i18n_header: softwareupdate.lastupdatesavailable
+    -
+        column: softwareupdate.automaticcheckenabled
+        i18n_header: softwareupdate.automaticcheckenabled
+        formatter: binaryYesNo
+    -
+        column: softwareupdate.automaticdownload
+        i18n_header: softwareupdate.automaticdownload
+        formatter: binaryYesNo
+    -
+        column: softwareupdate.configdatainstall
+        i18n_header: softwareupdate.configdatainstall
+        formatter: binaryYesNo
+    -
+        column: softwareupdate.criticalupdateinstall
+        i18n_header: softwareupdate.criticalupdateinstall
+        formatter: binaryYesNo
+    -
+        column: softwareupdate.xprotect_version
+        i18n_header: softwareupdate.xprotect_version
+    -
+        column: softwareupdate.gatekeeper_version
+        i18n_header: softwareupdate.gatekeeper_version
+    -
+        column: softwareupdate.kext_exclude_version
+        i18n_header: softwareupdate.kext_exclude_version
+    -
+        column: softwareupdate.mrt_version
+        i18n_header: softwareupdate.mrt_version
+    -
+        column: softwareupdate.program_seed
+        i18n_header: softwareupdate.program_seed
+        formatter: softwareupdate_seed

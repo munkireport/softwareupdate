@@ -1,0 +1,13 @@
+type: button
+widget_id: su_criticalupdateinstall-widget
+api_url: /module/softwareupdate/get_binary_widget/criticalupdateinstall
+i18n_title: softwareupdate.criticalupdateinstall_widget
+icon: fa-exclamation-triangle
+listing_link: /show/listing/softwareupdate/softwareupdate
+buttons:
+  - label: no
+    i18n_label: no
+    class: btn-danger 
+  - label: yes
+    i18n_label: yes
+    class: btn-success

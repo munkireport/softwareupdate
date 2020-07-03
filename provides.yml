@@ -1,0 +1,44 @@
+client_tabs:
+    softwareupdate-tab:
+        view: softwareupdate_tab
+        i18n: softwareupdate.clienttabtitle
+        badge: 'softwareupdate-cnt'
+listings:
+    softwareupdate:
+        view: softwareupdate_listing
+        i18n: softwareupdate.softwareupdate
+widgets:
+    softwareupdate_seed:
+        view: softwareupdate_seed_widget
+    softwareupdate_auto_update:
+        view: softwareupdate_auto_update_widget
+    softwareupdate_automaticcheckenabled:
+        view: softwareupdate_automaticcheckenabled_widget
+    softwareupdate_automaticdownload:
+        view: softwareupdate_automaticdownload_widget
+    softwareupdate_configdatainstall:
+        view: softwareupdate_configdatainstall_widget
+    softwareupdate_criticalupdateinstall:
+        view: softwareupdate_criticalupdateinstall_widget
+    softwareupdate_auto_update_restart_required:
+        view: softwareupdate_auto_update_restart_required_widget
+    softwareupdate_xprotect_version:
+        view: softwareupdate_xprotect_version_widget
+    softwareupdate_gatekeeper_version:
+        view: softwareupdate_gatekeeper_version_widget
+    softwareupdate_gatekeeper_disk_version:
+        view: softwareupdate_gatekeeper_disk_version_widget
+    softwareupdate_kext_exclude_version:
+        view: softwareupdate_kext_exclude_version_widget
+    softwareupdate_mrt_version:
+        view: softwareupdate_mrt_version_widget
+    softwareupdate_last_session_successful:
+        view: softwareupdate_last_session_successful_widget
+    softwareupdate_pending_recommended_updates:
+        view: softwareupdate_pending_recommended_updates_widget
+    softwareupdate_ignored_updates:
+        view: softwareupdate_ignored_updates_widget
+reports:
+    softwareupdate_report:
+        view: softwareupdate_report
+        i18n: softwareupdate.reporttitle

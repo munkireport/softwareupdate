@@ -1,0 +1,20 @@
+row1:
+  softwareupdate_automaticcheckenabled:
+  softwareupdate_automaticdownload:
+  firewall_allowdownloadsignedenabled:
+row2:
+  softwareupdate_auto_update_restart_required:
+  softwareupdate_criticalupdateinstall:
+  softwareupdate_configdatainstall:
+row3:
+  softwareupdate_seed:
+  softwareupdate_last_session_successful:
+  softwareupdate_pending_recommended_updates:
+row4:
+  softwareupdate_ignored_updates:
+  softwareupdate_mrt_version:
+  softwareupdate_xprotect_version:
+row5:
+  softwareupdate_gatekeeper_disk_version:
+  softwareupdate_gatekeeper_version:
+  softwareupdate_kext_exclude_version:

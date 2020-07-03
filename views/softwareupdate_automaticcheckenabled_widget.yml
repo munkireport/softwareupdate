@@ -1,0 +1,13 @@
+type: button
+widget_id: su_automaticcheckenabled-widget
+api_url: /module/softwareupdate/get_binary_widget/automaticcheckenabled
+i18n_title: softwareupdate.automaticcheckenabled_widget
+icon: fa-check-square
+listing_link: /show/listing/softwareupdate/softwareupdate
+buttons:
+  - label: no
+    i18n_label: no
+    class: btn-danger 
+  - label: yes
+    i18n_label: yes
+    class: btn-success

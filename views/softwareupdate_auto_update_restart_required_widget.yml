@@ -1,0 +1,13 @@
+type: button
+widget_id: su_auto_update_restart_required-widget
+api_url: /module/softwareupdate/get_binary_widget/auto_update_restart_required
+i18n_title: softwareupdate.auto_update_restart_required
+icon: fa-refresh
+listing_link: /show/listing/softwareupdate/softwareupdate
+buttons:
+  - label: no
+    i18n_label: no
+    class: btn-danger 
+  - label: yes
+    i18n_label: yes
+    class: btn-success

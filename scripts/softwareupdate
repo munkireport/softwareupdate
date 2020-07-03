@@ -250,26 +250,15 @@ def merge_two_dicts(x, y):
     return z
 
 def main():
+    """Main"""
     
     # Remove old softwareupdate.sh script, if it exists
     if os.path.isfile(os.path.dirname(os.path.realpath(__file__))+'/softwareupdate.sh'):
         os.remove(os.path.dirname(os.path.realpath(__file__))+'/softwareupdate.sh')
-    
-    """Main"""
-    # Create cache dir if it does not exist
-    cachedir = '%s/cache' % os.path.dirname(os.path.realpath(__file__))
-    if not os.path.exists(cachedir):
-        os.makedirs(cachedir)
-        
+
     # Set the encoding
     reload(sys)  
     sys.setdefaultencoding('utf8')
-
-    # Skip manual check
-    if len(sys.argv) > 1:
-        if sys.argv[1] == 'manualcheck':
-            print 'Manual check: skipping'
-            exit(0)
 
     # Get results
     result = dict()
@@ -281,8 +270,9 @@ def main():
     result = merge_two_dicts(result, get_kext_exclude())
     result = merge_two_dicts(result, get_mrt())
     result = merge_two_dicts(result, get_seedutil())
-    
+
     # Write softwareupdate results to cache file
+    cachedir = '%s/cache' % os.path.dirname(os.path.realpath(__file__))
     output_plist = os.path.join(cachedir, 'softwareupdate.plist')
     FoundationPlist.writePlist(result, output_plist)
 #    print FoundationPlist.writePlistToString(result)

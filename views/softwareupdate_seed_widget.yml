@@ -1,0 +1,23 @@
+type: button
+widget_id: softwareupdate_seed_widget-widget
+api_url: /module/softwareupdate/get_seed
+i18n_title: softwareupdate.enrolled_seed
+icon: fa-leaf
+listing_link: /show/listing/softwareupdate/softwareupdate
+buttons:
+  - label: developerseed
+    i18n_label: softwareupdate.developerseed
+    class: btn-danger 
+    hide_when_zero: true
+  - label: publicseed
+    i18n_label: softwareupdate.publicseed
+    class: btn-warning
+    hide_when_zero: true
+  - label: customer
+    i18n_label: softwareupdate.customerseed
+    class: btn-warning
+    hide_when_zero: true
+  - label: unenrolled
+    i18n_label: softwareupdate.unenrolled
+    class: btn-success
+    hide_when_zero: true
