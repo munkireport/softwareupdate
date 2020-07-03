@@ -1,0 +1,8 @@
+type: scrollbox
+widget_id: softwareupdate-kext_exclude_version-widget
+api_url: /module/softwareupdate/get_scroll_widget/kext_exclude_version
+i18n_title: softwareupdate.kext_exclude_version
+icon: fa-puzzle-piece
+listing_link: /show/listing/softwareupdate/softwareupdate
+search_key: kext_exclude_version
+i18n_empty_result: no_data

@@ -1,0 +1,13 @@
+type: button
+widget_id: su_automaticdownload-widget
+api_url: /module/softwareupdate/get_binary_widget/automaticdownload
+i18n_title: softwareupdate.automaticdownload_widget
+icon: fa-download
+listing_link: /show/listing/softwareupdate/softwareupdate
+buttons:
+  - label: no
+    i18n_label: no
+    class: btn-danger 
+  - label: yes
+    i18n_label: yes
+    class: btn-success
