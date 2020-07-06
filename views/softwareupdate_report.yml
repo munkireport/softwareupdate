@@ -1,7 +1,7 @@
 row1:
   softwareupdate_automaticcheckenabled:
   softwareupdate_automaticdownload:
-  firewall_allowdownloadsignedenabled:
+  softwareupdate_auto_update:
 row2:
   softwareupdate_auto_update_restart_required:
   softwareupdate_criticalupdateinstall:
