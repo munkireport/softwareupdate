@@ -1,8 +1,9 @@
 type: scrollbox
 widget_id: softwareupdate-gatekeeper_version-widget
-api_url: /module/softwareupdate/get_scroll_widget/gatekeeper_version
+api_url: /module/softwareupdate/get_binary_widget/gatekeeper_version
 i18n_title: softwareupdate.gatekeeper_version
 icon: fa-fort-awesome
 listing_link: /show/listing/softwareupdate/softwareupdate
-search_key: gatekeeper_version
+search_key: label
+badge: count
 i18n_empty_result: no_data

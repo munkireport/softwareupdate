@@ -4,5 +4,6 @@ api_url: /module/softwareupdate/get_scroll_widget/xprotect_version
 i18n_title: softwareupdate.xprotect_version
 icon: fa-shield
 listing_link: /show/listing/softwareupdate/softwareupdate
-search_key: xprotect_version
+search_key: label
+badge: count
 i18n_empty_result: no_data

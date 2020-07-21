@@ -5,9 +5,9 @@ i18n_title: softwareupdate.lastsessionsuccessful_widget
 icon: fa-check-circle-o
 listing_link: /show/listing/softwareupdate/softwareupdate
 buttons:
-  - label: no
+  - label: "0"
     i18n_label: no
     class: btn-danger 
-  - label: yes
+  - label: "1"
     i18n_label: yes
     class: btn-success

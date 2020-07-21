@@ -5,9 +5,9 @@ i18n_title: softwareupdate.auto_update_restart_required
 icon: fa-refresh
 listing_link: /show/listing/softwareupdate/softwareupdate
 buttons:
-  - label: no
+  - label: "0"
     i18n_label: no
     class: btn-danger 
-  - label: yes
+  - label: "1"
     i18n_label: yes
     class: btn-success
