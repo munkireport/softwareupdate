@@ -35,11 +35,11 @@ $(document).on('appReady', function(){
                         if (d[prop] == '' || d[prop] == null){
                            // Do nothing for empty values to blank them
 
-                        } else if((prop == "lastfullsuccessfuldate" && d[prop].indexOf('-') === -1) || (prop == "lastbackgroundsuccessfuldate" && d[prop].indexOf('-') === -1) || (prop == "lastsuccessfuldate" && d[prop].indexOf('-') === -1)){
+                        } else if((prop == "lastfullsuccessfuldate" && d[prop] > 100) || (prop == "lastbackgroundsuccessfuldate" && d[prop] > 100) || (prop == "lastsuccessfuldate" && d[prop] > 100)){
                            var date = new Date(d[prop] * 1000);
                            rows = rows + '<tr><th>'+i18n.t('softwareupdate.'+prop)+'</th><td><span title="'+moment(date).fromNow()+'">'+moment(date).format('llll')+'</span></td></tr>';
 
-                        } else if((prop == "gatekeeper_disk_last_modified" && d[prop].indexOf('-') === -1) || (prop == "gatekeeper_last_modified" && d[prop].indexOf('-') === -1)){
+                        } else if((prop == "gatekeeper_disk_last_modified" && d[prop] > 100) || (prop == "gatekeeper_last_modified" && d[prop] > 100)){
                            var date = new Date(d[prop] * 1000);
                            rows_gatekeeper = rows_gatekeeper + '<tr><th>'+i18n.t('softwareupdate.'+prop)+'</th><td><span title="'+moment(date).fromNow()+'">'+moment(date).format('llll')+'</span></td></tr>';
 
@@ -51,7 +51,7 @@ $(document).on('appReady', function(){
                            var date = new Date(d[prop] * 1000);
                            rows_kext = rows_kext + '<tr><th>'+i18n.t('softwareupdate.'+prop)+'</th><td><span title="'+moment(date).fromNow()+'">'+moment(date).format('llll')+'</span></td></tr>';
 
-                        } else if((prop == "mrt_last_modified" && d[prop].indexOf('-') === -1)){
+                        } else if((prop == "mrt_last_modified" && d[prop] > 100)){
                            var date = new Date(d[prop] * 1000);
                            rows_mrt = rows_mrt + '<tr><th>'+i18n.t('softwareupdate.'+prop)+'</th><td><span title="'+moment(date).fromNow()+'">'+moment(date).format('llll')+'</span></td></tr>';
 
