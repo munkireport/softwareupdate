@@ -5,9 +5,9 @@ i18n_title: softwareupdate.automaticcheckenabled_widget
 icon: fa-check-square
 listing_link: /show/listing/softwareupdate/softwareupdate
 buttons:
-  - label: "0"
+  - label: 0
     i18n_label: no
     class: btn-danger 
-  - label: "1"
+  - label: 1
     i18n_label: yes
     class: btn-success

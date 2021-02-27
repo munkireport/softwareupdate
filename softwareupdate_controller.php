@@ -8,7 +8,7 @@
  **/
 class Softwareupdate_controller extends Module_controller
 {
-	    function __construct()
+    function __construct()
     {
         // Store module path
         $this->module_path = dirname(__FILE__);
@@ -32,7 +32,7 @@ class Softwareupdate_controller extends Module_controller
     }
 
     /**
-     * Get data for binary widget
+     * Get data for widgets
      *
      * @return void
      * @author tuxudo
@@ -42,6 +42,7 @@ class Softwareupdate_controller extends Module_controller
         jsonView(
             Softwareupdate_model::select($column . ' AS label')
                 ->selectRaw('count(*) AS count')
+                ->whereNotNull($column)
                 ->filter()
                 ->groupBy($column)
                 ->orderBy('count', 'desc')
@@ -58,9 +59,11 @@ class Softwareupdate_controller extends Module_controller
     public function get_pending_widget($column = '')
     {
         $updates = [];
-        
 
         foreach(Softwareupdate_model::select($column . ' AS label')
+                    ->selectRaw('count(*) AS count')
+                    ->whereNotNull($column)
+                    ->where($column, '<>', '')
                     ->filter()
                     ->groupBy($column)
                     ->orderBy('count', 'desc')
