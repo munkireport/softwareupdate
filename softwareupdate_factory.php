@@ -46,5 +46,7 @@ $factory->define(Softwareupdate_model::class, function (Faker\Generator $faker) 
         'disable_seed_opt_out' => $faker->word(),
         'catalog_url_seed' => $faker->word(),
         'softwareupdate_history' => json_encode([]),
+        'xprotect_payloads_version' => $faker->word(),
+        'xprotect_payloads_last_modified' => $faker->dateTimeBetween('-1 month')->format('U'),
     ];
 });

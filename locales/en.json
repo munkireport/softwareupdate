@@ -62,5 +62,7 @@
     "content_type": "Content Type",
     "install_date": "Install Date",
     "no_data": "No Data",
-    "softwareupdate_history": "Software Update History"
+    "softwareupdate_history": "Software Update History",
+    "xprotect_payloads_version": "XProtect Payloads Version",
+    "xprotect_payloads_last_modified": "XProtect Payloads Installed"
 }

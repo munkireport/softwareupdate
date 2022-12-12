@@ -1,0 +1,9 @@
+type: scrollbox
+widget_id: softwareupdate-xprotect_payloads_version-widget
+api_url: /module/softwareupdate/get_scroll_widget/xprotect_payloads_version
+i18n_title: softwareupdate.xprotect_payloads_version
+icon: fa-shield
+listing_link: /show/listing/softwareupdate/softwareupdate
+search_key: label
+badge: count
+i18n_empty_result: no_data

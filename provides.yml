@@ -24,6 +24,8 @@ widgets:
         view: softwareupdate_auto_update_restart_required_widget
     softwareupdate_xprotect_version:
         view: softwareupdate_xprotect_version_widget
+    softwareupdate_xprotect_payloads_version:
+        view: softwareupdate_xprotect_payloads_version_widget
     softwareupdate_gatekeeper_version:
         view: softwareupdate_gatekeeper_version_widget
     softwareupdate_gatekeeper_disk_version:

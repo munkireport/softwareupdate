@@ -69,14 +69,17 @@ def get_softwareupdate_history():
     return {"softwareupdate_history":history}
 
 def get_xprotect():
-    # If less than 10.6 (Darwin 10), return nothing for XProtect
-    if getDarwinVersion() < 10:
-        return {}
-    # If less than 10.10 (Darwin 14), collect from legacy XProtect location
-    elif getDarwinVersion() < 14:
-        xprotect_plist = '/System/Library/CoreServices/CoreTypes.bundle/Contents/Resources/XProtect.meta.plist'
+    # Check for XProtect's Info.plist
+    if os.path.isfile('/System/Library/CoreServices/CoreTypes.bundle/Contents/Resources/XProtect.meta.plist'):
+        xprotect_plist = "/System/Library/CoreServices/CoreTypes.bundle/Contents/Resources/XProtect.meta.plist"
+    elif os.path.isfile('/System/Library/CoreServices/XProtect.bundle/Contents/Resources/XProtect.meta.plist'):
+        xprotect_plist = "/System/Library/CoreServices/XProtect.bundle/Contents/Resources/XProtect.meta.plist"
+    elif os.path.isfile('/Library/Apple/System/Library/CoreServices/XProtect.bundle/Contents/Resources/XProtect.meta.plist'):
+        xprotect_plist = "/Library/Apple/System/Library/CoreServices/XProtect.bundle/Contents/Resources/XProtect.meta.plist"
+    elif os.path.isfile('/Library/Apple/System/Library/CoreServices/XProtect.bundle/Contents/Resources/XProtect.meta.plist'):
+        xprotect_plist = "/Library/Apple/System/Library/CoreServices/CoreTypes.bundle/Contents/Resources/XProtect.meta.plist"
     else:
-        xprotect_plist = '/System/Library/CoreServices/XProtect.bundle/Contents/Resources/XProtect.meta.plist'
+        return {}
 
     try:
         out = FoundationPlist.readPlist(xprotect_plist)
@@ -91,6 +94,32 @@ def get_xprotect():
 
     stat = os.stat(xprotect_plist)
     xprotect['mrxprotect'] = str(int(stat.st_mtime))
+
+    return xprotect
+
+def get_xprotect_payloads():
+
+    # Check for XProtect's Info.plist
+    if os.path.isfile('/Library/Apple/System/Library/CoreServices/XProtect.app/Contents/Info.plist'):
+        xprotect_plist = "/Library/Apple/System/Library/CoreServices/XProtect.app/Contents/Info.plist"
+    else:
+        return {}
+
+    try:
+        out = FoundationPlist.readPlist(xprotect_plist)
+    except Exception:
+        return {}
+
+    xprotect = {}
+
+    for item in out:
+        if item == 'Bundle version string (short)':
+            xprotect['xprotect_payloads_version'] = str(out[item])
+        elif item == 'CFBundleShortVersionString':
+            xprotect['xprotect_payloads_version'] = str(out[item])
+
+    stat = os.stat(xprotect_plist)
+    xprotect['xprotect_payloads_last_modified'] = str(int(stat.st_mtime))
 
     return xprotect
 
@@ -208,7 +237,7 @@ def get_seedutil():
             if 'Currently enrolled in: ' in item and '(null)' not in item:
                 seedutil["enrolled_seed"] = item.replace("Currently enrolled in: ", "").strip()
             elif 'Program: ' in item:
-                seedutil["program_seed"] = item.replace("Program: ", "").strip()
+                seedutil["program_seed"] = item.replace("Program: ", "").replace("(null)", "0").strip()
             elif 'Build is seed: ' in item:
                 seedutil["build_is_seed"] = to_bool(item.replace("Build is seed: ", "").strip())
             elif 'NSShowFeedbackMenu: ' in item:
@@ -226,8 +255,6 @@ def get_seedutil():
 def getDarwinVersion():
     """Returns the Darwin version."""
     # Catalina -> 10.15.7 -> 19.6.0 -> 19
-    # os_version_tuple = platform.mac_ver()[0].split('.')
-    # return int(os_version_tuple[1])
     darwin_version_tuple = platform.release().split('.')
     return int(darwin_version_tuple[0]) 
 
@@ -285,6 +312,7 @@ def main():
     result = merge_two_dicts(result, get_kext_exclude())
     result = merge_two_dicts(result, get_mrt())
     result = merge_two_dicts(result, get_seedutil())
+    result = merge_two_dicts(result, get_xprotect_payloads())
 
     # Write softwareupdate results to cache file
     cachedir = '%s/cache' % os.path.dirname(os.path.realpath(__file__))

@@ -43,7 +43,7 @@ $(document).on('appReady', function(){
                            var date = new Date(d[prop] * 1000);
                            rows_gatekeeper = rows_gatekeeper + '<tr><th>'+i18n.t('softwareupdate.'+prop)+'</th><td><span title="'+moment(date).fromNow()+'">'+moment(date).format('llll')+'</span></td></tr>';
 
-                        } else if((prop == "mrxprotect" && d[prop] > 100)){
+                        } else if((prop == "mrxprotect" && d[prop] > 100) || (prop == 'xprotect_payloads_last_modified' && d[prop] > 100)){
                            var date = new Date(d[prop] * 1000);
                            rows_xprotect = rows_xprotect + '<tr><th>'+i18n.t('softwareupdate.'+prop)+'</th><td><span title="'+moment(date).fromNow()+'">'+moment(date).format('llll')+'</span></td></tr>';
 
@@ -163,7 +163,7 @@ $(document).on('appReady', function(){
                            rows_kext = rows_kext + '<tr><th>'+i18n.t('softwareupdate.'+prop)+'</th><td>'+d[prop]+'</td></tr>';
                         } else if(prop == 'gatekeeper_version' || prop == 'gatekeeper_disk_version'){
                            rows_gatekeeper = rows_gatekeeper + '<tr><th>'+i18n.t('softwareupdate.'+prop)+'</th><td>'+d[prop]+'</td></tr>';
-                        } else if(prop == 'xprotect_version' || prop == 'xprotect_version'){
+                        } else if(prop == 'xprotect_version' || prop == 'xprotect_version' || prop == 'xprotect_payloads_version'){
                            rows_xprotect = rows_xprotect + '<tr><th>'+i18n.t('softwareupdate.'+prop)+'</th><td>'+d[prop]+'</td></tr>';
 
                         // Else if build out the softwareupdate history table

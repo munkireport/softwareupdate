@@ -18,3 +18,5 @@ row5:
   softwareupdate_gatekeeper_disk_version:
   softwareupdate_gatekeeper_version:
   softwareupdate_kext_exclude_version:
+row6:
+  softwareupdate_xprotect_payloads_version:

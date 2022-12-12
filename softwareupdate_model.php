@@ -49,5 +49,7 @@ class Softwareupdate_model extends Eloquent
       'disable_seed_opt_out',
       'catalog_url_seed',
       'softwareupdate_history',
+      'xprotect_payloads_version',
+      'xprotect_payloads_last_modified',
     ];
 }

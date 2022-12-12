@@ -33,6 +33,7 @@ Table Schema
 * auto_update - boolean - If macOS will automatically update
 * auto_update_restart_required - boolean - If macOS will automatically install updates that require a restart
 * xprotect_version - varchar(255) - version of XProtect installed
+* mrxprotect - big integer - when XProtect was last installed
 * gatekeeper_version - varchar(255) - version of Gatekeeper installed
 * gatekeeper_last_modified - big integer - when Gatekeeper was last installed
 * gatekeeper_disk_version - varchar(255) - version of Gatekeeper disk that is installed
@@ -48,3 +49,5 @@ Table Schema
 * disable_seed_opt_out - varchar(255) - if opting out of seed program is disabled
 * catalog_url_seed - varchar(255) - catalog URL in use by seed program
 * softwareupdate_history - medium text - JSON string containing history of all software updates
+* xprotect_payloads_version - varchar(255) - version of XProtect Payloads installed
+* xprotect_payloads_last_modified - big integer - when XProtect Payloads was last installed

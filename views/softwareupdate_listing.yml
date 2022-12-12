@@ -50,6 +50,9 @@ table:
         column: softwareupdate.xprotect_version
         i18n_header: softwareupdate.xprotect_version
     -
+        column: softwareupdate.xprotect_payloads_version
+        i18n_header: softwareupdate.xprotect_payloads_version
+    -
         column: softwareupdate.gatekeeper_version
         i18n_header: softwareupdate.gatekeeper_version
     -
