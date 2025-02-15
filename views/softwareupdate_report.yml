@@ -13,22 +13,20 @@ row3:
 row4:
   softwareupdate_force_major_deferred:
   softwareupdate_force_minor_deferred:
-  softwareupdate_outofdate:
-row5:
   softwareupdate_allow_rsr_removal:
-  softwareupdate_allow_rsr_installation:
-row6:
+row5:
   softwareupdate_ignored_updates:
   softwareupdate_pending_recommended_updates:
   softwareupdate_mrt_version:
-row7:
+row6:
   softwareupdate_gatekeeper_disk_version:
   softwareupdate_gatekeeper_version:
   softwareupdate_kext_exclude_version:
-row8:
+row7:
   softwareupdate_xprotect_version:
   softwareupdate_xprotect_payloads_version:
-row9:
+  softwareupdate_allow_rsr_installation:
+row8:
   softwareupdate_managed_updates_deferrals:
   softwareupdate_managed_max_deferrals:
   softwareupdate_managed_product_keys:

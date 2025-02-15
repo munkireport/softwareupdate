@@ -9,14 +9,17 @@ buttons:
     i18n_label: softwareupdate.developerseed
     class: btn-danger 
     hide_when_zero: true
+    search_component: Developer Beta
   - label: "3"
     i18n_label: softwareupdate.publicseed
     class: btn-warning
     hide_when_zero: true
+    search_component: Public Beta
   - label: "1"
     i18n_label: softwareupdate.customerseed
     class: btn-warning
     hide_when_zero: true
+    search_component: AppleSeed Beta
   - label: "0"
     i18n_label: softwareupdate.unenrolled
     class: btn-success

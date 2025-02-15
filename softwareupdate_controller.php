@@ -76,9 +76,12 @@ class Softwareupdate_controller extends Module_controller
         $updates = [];
 
         foreach(Softwareupdate_model::select($column . ' AS label')
+                    ->selectRaw('count(*) AS count')
                     ->whereNotNull($column)
                     ->where($column, '<>', '')
                     ->filter()
+                    ->groupBy($column)
+                    ->orderBy('count', 'desc')
                     ->get()
                     ->toArray() as $update){
             $update_array = explode( ', ', $update['label']);

@@ -1,5 +1,5 @@
 i18n_title: softwareupdate.reporttitle
-not_null_column: lastsuccessfuldate
+# not_null_column: lastsuccessfuldate
 js_link: module/softwareupdate/js/softwareupdate
 table:
     -
@@ -22,9 +22,10 @@ table:
         i18n_header: softwareupdate.lastbackgroundsuccessfuldate
         formatter: timestampToMoment
     -
-        column: softwareupdate.lastupdatesavailable
-        i18n_header: softwareupdate.lastupdatesavailable
+        column: softwareupdate.lastrecommendedupdatesavailable
+        i18n_header: softwareupdate.lastrecommendedupdatesavailable
         formatter: format_softwareupdate_updates_available
+        filter: uptodateFilter        
     -
         column: softwareupdate.program_seed
         i18n_header: softwareupdate.program_seed
@@ -36,22 +37,27 @@ table:
     -
         column: softwareupdate.allow_prerelease_installation
         i18n_header: softwareupdate.allow_prerelease_installation
-        formatter: format_softwareupdate_yes_no
+        filter: allow_prerelease_installation_filter
+        formatter: softwareUpdateYesNo
     -
         column: softwareupdate.automaticcheckenabled
         i18n_header: softwareupdate.automaticcheckenabled
+        filter: automaticcheckenabled_filter
         formatter: format_softwareupdate_yes_no_rev
     -
         column: softwareupdate.automaticdownload
         i18n_header: softwareupdate.automaticdownload
+        filter: automaticdownload_filter
         formatter: format_softwareupdate_yes_no_rev
     -
         column: softwareupdate.configdatainstall
         i18n_header: softwareupdate.configdatainstall
+        filter: configdatainstall_filter
         formatter: format_softwareupdate_yes_no_rev
     -
         column: softwareupdate.criticalupdateinstall
         i18n_header: softwareupdate.criticalupdateinstall
+        filter: criticalupdateinstall_filter
         formatter: format_softwareupdate_yes_no_rev
     -
         column: softwareupdate.xprotect_version
@@ -71,32 +77,51 @@ table:
     -
         column: softwareupdate.force_delayed_minor_updates
         i18n_header: softwareupdate.force_delayed_minor_updates
+        filter: force_minor_deferred_filter
         formatter: format_softwareupdate_yes_no
     -
         column: softwareupdate.force_delayed_major_updates
         i18n_header: softwareupdate.force_delayed_major_updates
+        filter: force_major_deferred_filter
         formatter: format_softwareupdate_yes_no
     -
         column: softwareupdate.allow_rapid_security_response_installation
         i18n_header: softwareupdate.allow_rapid_security_response_installation
-        formatter: format_softwareupdate_yes_no_rev
+        filter: allow_rsr_installation_filter
+        formatter: softwareUpdateYesNo
     -
         column: softwareupdate.allow_rapid_security_response_removal
         i18n_header: softwareupdate.allow_rapid_security_response_removal
-        formatter: format_softwareupdate_yes_no 
-    -
-        column: softwareupdate.managed_do_it_later_deferral_count
-        i18n_header: softwareupdate.managed_do_it_later_deferral_count
-        filter: ManagedDeferralCounterFilter
-    -
-        column: softwareupdate.maximum_managed_do_it_later_deferral_count
-        i18n_header: softwareupdate.maximum_managed_do_it_later_deferral_count
-    -
-        column: softwareupdate.managed_product_keys
-        i18n_header: softwareupdate.managed_product_keys
+        filter: allow_rsr_removal_filter
+        formatter: softwareUpdateYesNo
+    # -
+    #     column: softwareupdate.managed_do_it_later_deferral_count
+    #     i18n_header: softwareupdate.managed_do_it_later_deferral_count
+    #     filter: ManagedDeferralCounterFilter
+    # -
+    #     column: softwareupdate.maximum_managed_do_it_later_deferral_count
+    #     i18n_header: softwareupdate.maximum_managed_do_it_later_deferral_count
+    # -
+    #     column: softwareupdate.managed_product_keys
+    #     i18n_header: softwareupdate.managed_product_keys
     -
         column: softwareupdate.ddm_info
         i18n_header: softwareupdate.ddm_info
     -
         column: softwareupdate.catalogurl
         i18n_header: softwareupdate.catalogurl
+    -
+        column: softwareupdate.auto_update_restart_required
+        i18n_header: softwareupdate.auto_update_restart_required
+        filter: auto_update_restart_required_filter
+        formatter: softwareUpdateYesNo
+    -
+        column: softwareupdate.auto_update
+        i18n_header: softwareupdate.auto_update
+        filter: auto_update_filter
+        formatter: softwareUpdateYesNo
+    -
+        column: softwareupdate.lastsessionsuccessful
+        i18n_header: softwareupdate.lastsessionsuccessful
+        filter: lastsessionsuccessful_filter
+        formatter: format_softwareupdate_yes_no_rev

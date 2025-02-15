@@ -303,7 +303,7 @@ def get_ddm_info():
     if os.path.isfile("/private/var/db/softwareupdate/SoftwareUpdateDDMStatePersistence.plist"):
         plist = FoundationPlist.readPlist("/private/var/db/softwareupdate/SoftwareUpdateDDMStatePersistence.plist")
 
-        if plist["SUCorePersistedStatePolicyFields"] and plist["SUCorePersistedStatePolicyFields"]["Declarations"]:
+        if "SUCorePersistedStatePolicyFields" in plist and plist["SUCorePersistedStatePolicyFields"] and "Declarations" in plist["SUCorePersistedStatePolicyFields"]:
             key_index = 1
             ddm_info = ""
             for declaration in plist["SUCorePersistedStatePolicyFields"]["Declarations"]:

@@ -8,6 +8,8 @@ buttons:
   - label: 0
     i18n_label: no
     class: btn-danger 
+    search_component: autodownload_off
   - label: 1
     i18n_label: yes
     class: btn-success
+    search_component: autodownload_on
