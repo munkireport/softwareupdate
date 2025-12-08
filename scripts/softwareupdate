@@ -7,7 +7,6 @@ import platform
 import time
 import json
 
-sys.path.insert(0, '/usr/local/munki')
 sys.path.insert(0, '/usr/local/munkireport')
 
 from munkilib import FoundationPlist
@@ -340,6 +339,18 @@ def get_deferred_updates():
                 update_out["deferred"] = to_bool(item.replace("Deferred:", "").strip().split('  (Date: ')[0].strip())
             elif 'MacOSUpdate:' in item:
                 update_out["minor_os_update"] = to_bool(item.replace("MacOSUpdate:", "").strip())
+            elif 'Title:' in item or 'Major Title:' in item:
+                update_out['name'] = item.replace("Major Title:", "").replace("Title:", "").replace(";", "").replace('"', "").strip()
+            elif 'Version:' in item and 'Major Version:' not in item:
+                try:
+                    version_list = item.replace("Version:", "").replace(";", "").replace('"', "").strip().split(" <")
+                    update_out['version'] = version_list[0].strip()
+                    if "(null)" not in version_list[1]:
+                        update_out['build'] = version_list[1].replace("Build: ", "").replace(">", "").strip()
+                except:
+                    continue
+            elif 'Major Version:' in item:
+                update_out['version'] = item.replace("Major Version:", "").replace(";", "").replace('"', "").strip()
 
         if update_out["product_key"] != "":
             deferred_updates_out.append(update_out)

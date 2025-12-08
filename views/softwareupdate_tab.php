@@ -142,11 +142,11 @@ $(document).on('appReady', function(){
                             if (typeof d['version'] !== "undefined") {var version = d['version']} else {var version = ""}
                             if (typeof d['build'] !== "undefined") {var build = d['build']} else {var build = ""}
                             if (typeof d['deferred'] !== "undefined" && d['deferred'] == "1") {var deferred = i18n.t('yes')} else {var deferred = i18n.t('no')}
-                            if (typeof d['deferred_until'] !== "undefined" && d['deferred'] !== "" && d['deferred'] > 0) {var date_1 = new Date(d['deferred_until'] * 1000); date = '<span title="'+moment(date_1).fromNow()+'">'+moment(date_1).format('llll')} else {var date = ""}
+                            if (typeof d['deferred_until'] !== "undefined" && d['deferred_until'] !== "" && d['deferred_until'] > 0) {var date_1 = new Date(d['deferred_until'] * 1000); date = '<span title="'+moment(date_1).fromNow()+'">'+moment(date_1).format('llll')} else {var date = ""}
                             if (typeof d['major_os_update'] !== "undefined" && d['major_os_update'] == "1") {var major_os_update = i18n.t('yes')} else {var major_os_update = i18n.t('no')}
                             if (typeof d['minor_os_update'] !== "undefined" && d['minor_os_update'] == "1") {var minor_os_update = i18n.t('yes')} else {var minor_os_update = i18n.t('no')}
                             if (typeof d['security_response_update'] !== "undefined" && d['security_response_update'] == "1") {var security_response_update = i18n.t('yes')} else {var security_response_update = i18n.t('no')}
-                            if (typeof d['download_size'] !== "undefined") {var download_size = fileSize(d['download_size'], 2)} else {var download_size = ""}
+                            if (typeof d['download_size'] !== "undefined" && d['download_size'] !== "") {var download_size = fileSize(d['download_size'], 2)} else {var download_size = ""}
                             if (typeof d['product_key'] !== "undefined") {var product_key = d['product_key']} else {var product_key = ""}
                             
                             // Generate rows from data
